@@ -15,6 +15,8 @@ app.get("/", (req, res) =>{
   res.send("Hello guys! Welcome to leetlab");
 })
 
+
+
 app.use("/api/v1/auth", authRoutes)
 
 app.listen(port, () => {
