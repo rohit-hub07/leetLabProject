@@ -52,7 +52,7 @@ model Problem {
   
 
   testcases Json
-  codeSnippet Json
+  codeSnippet Json  
   referenceSolutions Json
 
   createdAt DateTime @default(now())

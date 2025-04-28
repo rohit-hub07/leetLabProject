@@ -45,4 +45,30 @@ const isAuthenticated = async(req, res, next) => {
   }
 }
 
-export default isAuthenticated;
+const checkAdmin = async(req, res, next) => {
+  try{
+    console.log("req.user inside checkAdmin", req.user.id, req.user)
+    const userId = req.user?.id;
+    const user = await db.user.findUnique({
+      where: {
+        id: userId
+      },
+      select: {
+        role: true
+      }
+    })
+    if(!user || user.role !== "ADMIN"){
+      return res.status(403).json({
+        message: "Forbidden - You don't have permission to access this resource"
+      })
+    }
+    next();
+  }catch (err){
+    console.error("Error check teh admin role: ", err);
+    return res.status(500).json({
+      message: "Error checking the admin role"
+    })
+  }
+}
+
+export {isAuthenticated, checkAdmin} ;

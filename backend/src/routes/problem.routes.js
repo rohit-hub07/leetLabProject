@@ -1,0 +1,19 @@
+import express from 'express'
+import { checkAdmin, isAuthenticated } from '../middleware/auth.middle.js';
+import { createProblem, deleteProblem, getAllProblems, getAllProblemsSolvedBysUser, getProblemById, updateProblem } from '../controller/problem.controller.js';
+
+const problemRoutes = express.Router();
+
+problemRoutes.post('/create-problem',isAuthenticated, checkAdmin, createProblem)
+
+problemRoutes.get('/get-all-problems', isAuthenticated, getAllProblems);
+
+problemRoutes.get('/get-problems/:id', isAuthenticated, getProblemById);
+
+problemRoutes.put('/get-problem/:id', isAuthenticated, checkAdmin, updateProblem);
+
+problemRoutes.delete('/delete-problem/:id', isAuthenticated, checkAdmin, deleteProblem);
+
+problemRoutes.get('/get-solved-problems', isAuthenticated, getAllProblemsSolvedBysUser);
+
+export default problemRoutes;
