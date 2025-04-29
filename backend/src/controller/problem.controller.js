@@ -228,7 +228,7 @@ export const updateProblem = async (req, res) => {
 export const deleteProblem = async (req, res) => {
   const { id } = req.params;
   try {
-    const problem = await db.problem.findUnique({ where: id });
+    const problem = await db.problem.findUnique({ where: {id} });
 
     if (!problem) {
       return res.status(404).json({
