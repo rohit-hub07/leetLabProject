@@ -8,7 +8,7 @@ problemRoutes.post('/create-problem',isAuthenticated, checkAdmin, createProblem)
 
 problemRoutes.get('/get-all-problems', isAuthenticated, getAllProblems);
 
-problemRoutes.get('/get-problems/:id', isAuthenticated, getProblemById);
+problemRoutes.get('/get-problem/:id', isAuthenticated, getProblemById);
 
 problemRoutes.put('/get-problem/:id', isAuthenticated, checkAdmin, updateProblem);
 
