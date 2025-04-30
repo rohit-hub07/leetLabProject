@@ -36,6 +36,7 @@ export const createProblem = async (req, res) => {
           error: `Language ${language} is not supported!`,
         });
       }
+      //submission will hold each test cases with the source code, lanId, stdin, output
       const submissions = testcases.map(({ input, output }) => ({
         source_code: solutionCode,
         language_id: languageId,
@@ -44,9 +45,12 @@ export const createProblem = async (req, res) => {
       }));
       // console.log("Error before hitting submitBatch method")
 
+      //creating id's for each test cases. It will have token:id, status code etc
       const submissionResults = await submitBatch(submissions);
+
       // console.log("Error after hitting submitBatch method")
 
+      //extracting only tokens of the submissionResults
       const tokens = submissionResults.map((rs) => rs.token);
 
       console.log("tokens of create problem", tokens);

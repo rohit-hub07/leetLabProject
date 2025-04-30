@@ -24,7 +24,9 @@ export const pollBatchResults = async(tokens) => {
 
     console.log(` Data inside of pollBatchResults ${data}`)
 
+    // Here we are just taking the submissions of the data obkect and submission holds an array of objects witht he status id of each test case
     const results = data.submissions;
+
     const isAllDone = results.every((r) => r.status.id !== 1 && r.status.id !==2);
 
     console.log("Results of pollBatchResults", results)
@@ -44,5 +46,10 @@ export const submitBatch = async (submissions) => {
 })
 
   console.log("Submission Results: ",data);
-  return data;
+  return data; 
+  // [
+  //   { token: "uuid-1", status: { /* … */ }, /* other fields… */ },
+  //   { token: "uuid-2", status: { /* … */ }, /* … */ },
+  //    one object per submission you sent
+  // ]
 }
