@@ -103,7 +103,7 @@ export const loginController = async(req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
 
-    res.status(201).json({
+    res.status(200).json({
       message: "User loggedIn successfully",
       user: {
         id: user.id,
@@ -130,7 +130,7 @@ export const logoutController = async(req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
   
-    res.status(201).json({
+    res.status(200).json({
       message: "User logout successfully!",
       success: true
     })
