@@ -45,6 +45,7 @@ export const registerController = async (req, res) => {
     });
 
     res.status(201).json({
+      success: true,
       message: "User created successfully!",
       user: {
         id: newUser.id,
@@ -131,6 +132,7 @@ export const logoutController = async(req, res) => {
     })
   
     res.status(200).json({
+      success: true,
       message: "User logout successfully!",
       success: true
     })
