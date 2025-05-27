@@ -26,7 +26,7 @@ export const useProblemStore = create((set) => ({
   getProblemById: async (id) => {
     try {
       set({ isProblemLoading: true });
-      const res = await axiosInstance(`/problems/get-problem/${id}`);
+      const res = await axiosInstance.get(`/problems/get-problem/${id}`);
 
       set({ problem: res.data.problem });
       toast.success(res.data.message);
@@ -42,7 +42,7 @@ export const useProblemStore = create((set) => ({
   getSolvedProblemByUser: async () => {
     try {
       set({isProblemsLoading: true})
-      const res = await axiosInstance("/problems/get-solved-problems");
+      const res = await axiosInstance.get("/problems/get-solved-problems");
 
       set({solvedProblem: res.data.problems});
       toast.success(res.data.message);

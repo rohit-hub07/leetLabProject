@@ -5,7 +5,9 @@ import { getAllSubmission, getAllTheSubmissionsForProblem, getSubmissionForProbl
 const submissionRoutes = express.Router();
 
 submissionRoutes.get("/get-all-submissions", isAuthenticated, getAllSubmission);
+
 submissionRoutes.get("/get-all-submissions/:problemId", isAuthenticated, getSubmissionForProblem);
+
 submissionRoutes.get("/get-submissions-count/:problemId", isAuthenticated, getAllTheSubmissionsForProblem);
 
 

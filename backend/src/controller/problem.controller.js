@@ -251,6 +251,7 @@ export const deleteProblem = async (req, res) => {
     res.status(200).json({
       message: "Problem deleted successfully",
       success: true,
+      problem
     });
   } catch (error) {
     return res.status(500).json({

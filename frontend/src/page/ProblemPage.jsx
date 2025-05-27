@@ -34,7 +34,7 @@ const ProblemPage = () => {
     getSubmissionForProblem,
     getSubmissionCountForProblem,
     submissionCount,
-  } = useSubmissionStore();
+  } = useSubmissionStore(); 
 
   const [code, setCode] = useState("");
   const [activeTab, setActiveTab] = useState("description");

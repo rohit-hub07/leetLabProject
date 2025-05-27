@@ -5,7 +5,7 @@ export const createPlaylist = async (req, res) => {
     const { name, description } = req.body;
     const userId = req.user.id;
 
-    const playlist = await DataView.playlist.create({
+    const playlist = await db.playlist.create({
       data: {
         name,
         description,
@@ -30,7 +30,7 @@ export const getAllListDetails = async (req, res) => {
   try {
     const playlists = await db.playlist.findMany({
       where: {
-        userID: req.user.id,
+        userId: req.user.id,
       },
       include: {
         problems: {
@@ -40,7 +40,7 @@ export const getAllListDetails = async (req, res) => {
         },
       },
     });
-
+    console.log("PlaylistData", playlists)
     res.status(200).json({
       success: true,
       message: "Playlist fetched successfully",
@@ -49,7 +49,7 @@ export const getAllListDetails = async (req, res) => {
   } catch (error) {
     console.log("Error fetching playlist", error);
     res.status(500).json({
-      error: "Failed to create playlist",
+      error: "Failed to fetch playlist",
     });
   }
 };
@@ -99,15 +99,14 @@ export const addProblemToPlaylist = async (req, res) => {
     }
 
     //create records for each problem in the playlists
-    const problemsInPlaylist = await db.problemInPlaylist({
-      data: problemIds.map((problemId) => {
-        {
-          playlistId, problemId;
-        }
-      }),
+    const problemsInPlaylist = await db.problemInPlaylist.createMany({
+      data: problemIds.map((problemId) => ({       
+          playlistId: playlistId,
+          problemId: problemId,
+      }))
     });
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: "Problem added to playlist successfully",
       problemsInPlaylist,

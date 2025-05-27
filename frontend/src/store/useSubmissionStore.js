@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 
-export const useSubmissionStore = create((set, get) => ({
+export const useSubmissionStore = create((set) => ({
   isLoading: false,
   submissions: [],
   submission: null,
@@ -27,12 +27,10 @@ export const useSubmissionStore = create((set, get) => ({
   getSubmissionForProblem: async (problemId) => {
     try {
       const res = await axiosInstance.get(
-        `/submission/get-submission/${problemId}`
+        `/submission/get-all-submissions/${problemId}`
       );
 
       set({ submission: res.data.submissions });
-
-      
 
     } catch (error) {
       console.log("Error getting submissions for problem", error);

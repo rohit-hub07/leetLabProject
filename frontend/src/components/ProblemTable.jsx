@@ -2,22 +2,25 @@ import React, { useState, useMemo } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Link } from "react-router-dom";
 import { Bookmark, PencilIcon, Trash, TrashIcon, Plus } from "lucide-react";
-// import { useActions } from "../store/useAction";
+import { useActions } from "../store/useAction";
+import { Loader2 } from "lucide-react";
 // import AddToPlaylistModal from "./AddToPlaylist";
-// import CreatePlaylistModal from "./CreatePlaylistModal";
-// import { usePlaylistStore } from "../store/usePlaylistStore";
+import AddToPlaylistModal from "./AddToPlaylist";
+import { usePlaylistStore } from "../store/usePlaylistStore";
+import CreatePlaylistModal from "./CreatePlaylistModal";
 
 const ProblemsTable = ({ problems }) => {
   const { authUser } = useAuthStore();
-  // const { onDeleteProblem } = useActions();
-  // const { createPlaylist } = usePlaylistStore();
+
+  const { createPlaylist } = usePlaylistStore();
   const [search, setSearch] = useState("");
   const [difficulty, setDifficulty] = useState("ALL");
   const [selectedTag, setSelectedTag] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
-  // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  // const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] =
-  //   useState(false);
+
+  const { isDeletingProblem, onDeleteProblem } = useActions();
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isAddToPlaylistModalOpen, setIsAddToPlaylistModalOpen] = useState(false);
   const [selectedProblemId, setSelectedProblemId] = useState(null);
 
   // Extract all unique tags from problems
@@ -192,7 +195,11 @@ const ProblemsTable = ({ problems }) => {
                               onClick={() => handleDelete(problem.id)}
                               className="btn btn-sm btn-error"
                             >
-                              <TrashIcon className="w-4 h-4 text-white" />
+                              {isDeletingProblem ? (
+                                <Loader2 className="animate-spin h-4 w-4" />
+                              ) : (
+                                <TrashIcon className="w-4 h-4 text-white" />
+                              )}
                             </button>
                             <button disabled className="btn btn-sm btn-warning">
                               <PencilIcon className="w-4 h-4 text-white" />
@@ -246,17 +253,17 @@ const ProblemsTable = ({ problems }) => {
       </div>
 
       {/* Modals */}
-      {/* <CreatePlaylistModal
+      <CreatePlaylistModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         onSubmit={handleCreatePlaylist}
-      /> */}
+      />
 
-      {/* <AddToPlaylistModal
+      <AddToPlaylistModal
         isOpen={isAddToPlaylistModalOpen}
         onClose={() => setIsAddToPlaylistModalOpen(false)}
         problemId={selectedProblemId}
-      /> */}
+      />
     </div>
   );
 };
