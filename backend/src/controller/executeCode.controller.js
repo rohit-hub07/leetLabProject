@@ -146,7 +146,7 @@ export const executeCode = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Code executed successfully",
-      dubmission: submissionWithTestCase,
+      submission: submissionWithTestCase,
     });
   } catch (error) {
     console.log("Error executing code: ", error.message);

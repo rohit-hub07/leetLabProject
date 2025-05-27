@@ -95,7 +95,15 @@ export const createProblem = async (req, res) => {
 
 export const getAllProblems = async (req, res) => {
   try {
-    const problems = await db.problem.findMany();
+    const problems = await db.problem.findMany({
+      include: {
+        solvedBy: {
+          where: {
+            userId: req.user.id,
+          },
+        },
+      },
+    });
     if (!problems) {
       return res.status(404).json({
         error: "No problem found",
@@ -232,7 +240,7 @@ export const updateProblem = async (req, res) => {
 export const deleteProblem = async (req, res) => {
   const { id } = req.params;
   try {
-    const problem = await db.problem.findUnique({ where: {id} });
+    const problem = await db.problem.findUnique({ where: { id } });
 
     if (!problem) {
       return res.status(404).json({
@@ -259,28 +267,28 @@ export const getAllProblemsSolvedByUser = async (req, res) => {
       where: {
         solvedBy: {
           some: {
-            userId: req.user.id
-          }
-        }
+            userId: req.user.id,
+          },
+        },
       },
       include: {
         solvedBy: {
-          where:{
-            userId: req.user.id
-          } 
-        }
-      }
-    })
+          where: {
+            userId: req.user.id,
+          },
+        },
+      },
+    });
 
     res.status(200).json({
       success: true,
       message: "Problem fetched successfully",
-      problems
-    })
+      problems,
+    });
   } catch (error) {
-    console.log("Error fetching problems : ",error);
+    console.log("Error fetching problems : ", error);
     return res.status(500).json({
-    error:"Failed to fetch problems"
-    })
+      error: "Failed to fetch problems",
+    });
   }
 };

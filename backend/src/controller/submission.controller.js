@@ -12,7 +12,8 @@ export const getAllSubmission = async(req, res)=>{
 
     res.status(200).json({
      success: true,
-     message: "Submission fetched sucessfully"
+     message: "Submission fetched sucessfully",
+     submission
     })
   } catch (error) {
     console.log("Fetch Submissions Error: ", error.message);
@@ -35,7 +36,8 @@ export const getAllTheSubmissionsForProblem = async(req, res) =>{
 
     res.status(200).json({
       success: true,
-      message: "Submission fetched successfully"
+      message: "Submission fetched successfully",
+      submissions
     })
   } catch (error) {
     console.log("Error fetching submissions", error);
