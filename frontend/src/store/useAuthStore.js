@@ -49,7 +49,7 @@ export const useAuthStore = create((set) => ({
 
       set({authUser: res.data.user})
 
-      toast.success("res.data.message")
+      toast.success(res.data.message);
     } catch (error) {
       console.log("Error while logging :",error);
       toast.error("Error while logging");

@@ -60,7 +60,7 @@ export const usePlaylistStore = create((set, get) => ({
   addProblemToPlaylist: async (playlistId, problemIds) => {
     try {
       set({ isLoading: true });
-      await axiosInstance.post(`/playlist/${playlistId}/add-problem`, {
+        await axiosInstance.post(`/playlist/${playlistId}/add-problem`, {
         problemIds,
       });
 
@@ -71,8 +71,13 @@ export const usePlaylistStore = create((set, get) => ({
         await get().getPlaylistDetails(playlistId);
       }
     } catch (error) {
-      console.error("Error adding problem to playlist:", error);
-      toast.error("Failed to add problem to playlist");
+      if (error.response?.status === 409) {
+      // Show a custom toast if problems already exist
+      const existingProblem = error.response.data?.Playlistname || [];
+      toast.error(`Problem already exist in the playlist: ${existingProblem.join(", ")}`);
+    } else {
+      toast.error("Error adding problem to playlist");
+    }
     } finally {
       set({ isLoading: false });
     }

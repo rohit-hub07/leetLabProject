@@ -40,7 +40,7 @@ export const getAllListDetails = async (req, res) => {
         },
       },
     });
-    console.log("PlaylistData", playlists)
+    console.log("PlaylistData", playlists);
     res.status(200).json({
       success: true,
       message: "Playlist fetched successfully",
@@ -97,13 +97,32 @@ export const addProblemToPlaylist = async (req, res) => {
     if (!Array.isArray(problemIds) || problemIds.length === 0) {
       return res.status(400).json({ error: "Invalid or missing problemId" });
     }
+    //check if the problem already exist in the playlist
+    const existingProblems = await db.problemInPlaylist.findMany({
+      where: {
+        playlistId: playlistId,
+        problemId: {
+          in: problemIds,
+        },
+      },
+      include: {
+          playlist: true,
+        }
+    });
 
+    if (existingProblems.length > 0) {
+      return res.status(409).json({
+        success: false,
+        error: "Problem already exist in the playlist!",
+        Playlistname: existingProblems.map((p) => p.playlist.name),
+      });
+    }
     //create records for each problem in the playlists
     const problemsInPlaylist = await db.problemInPlaylist.createMany({
-      data: problemIds.map((problemId) => ({       
-          playlistId: playlistId,
-          problemId: problemId,
-      }))
+      data: problemIds.map((problemId) => ({
+        playlistId: playlistId,
+        problemId,
+      })),
     });
 
     res.status(200).json({
@@ -113,7 +132,7 @@ export const addProblemToPlaylist = async (req, res) => {
     });
   } catch (error) {
     console.log("Error adding problem in playlist: ", error.message);
-    res.status(500).josn({
+    res.status(500).json({
       error: "Error adding problem in playlist",
     });
   }
@@ -140,29 +159,29 @@ export const deletePlaylist = async (req, res) => {
 };
 
 export const removeProblemFromPlaylist = async (req, res) => {
-  const {playlistId} = req.params;
+  const { playlistId } = req.params;
   const { problemIds } = req.body;
   try {
-    if(!Array.isArray(problemIds) || problemIds.length === 0){
-      return res.status(400).json({error: "Invalid or missing problemId"});
+    if (!Array.isArray(problemIds) || problemIds.length === 0) {
+      return res.status(400).json({ error: "Invalid or missing problemId" });
     }
     const deletedProblem = await db.problemInPlaylist.deleteMany({
-      where:{
+      where: {
         playlistId,
-        problemId:{
-          in: problemIds
-        }
-      }
+        problemId: {
+          in: problemIds,
+        },
+      },
     });
     res.status(200).json({
       success: true,
       message: "Problem deleted successfully from the playlist",
       deletedProblem,
-    })
+    });
   } catch (error) {
     console.log("Error removing problem from the playlist: ", error);
     res.status(500).json({
-      error: "Error removing problem from the playlist"
-    })
+      error: "Error removing problem from the playlist",
+    });
   }
 };
