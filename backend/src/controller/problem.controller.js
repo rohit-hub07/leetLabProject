@@ -280,7 +280,7 @@ export const getAllProblemsSolvedByUser = async (req, res) => {
         },
       },
     });
-
+    
     res.status(200).json({
       success: true,
       message: "Problem fetched successfully",
