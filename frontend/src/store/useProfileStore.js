@@ -8,6 +8,7 @@ export const useProfileStore = create((set) => ({
   getSolvedProblems: [],
   getPlaylists: [],
   getRecentSubmissions: [],
+  getPlaylistProblems: [],
 
   profileData: async () => {
     try {
@@ -72,23 +73,34 @@ export const useProfileStore = create((set) => ({
       console.log("Error deleting the playlist");
       toast.error("Error deleting the playlist");
     } finally {
-      set({isLoading: false})
+      set({ isLoading: false });
     }
   },
 
-  deleteProblemFromPlaylist : async(id) => {
+  deleteProblemFromPlaylist: async (id) => {
     try {
-      set({isLoading: true});
-      const res = await axiosInstance.delete(`/playlist/${id}`);
+      set({ isLoading: true });
+      const res = await axiosInstance.delete(`/playlist/${id}/remove-problem`);
       toast.success(res.data.message);
     } catch (error) {
       console.log("Error remobing the problem");
       toast.error("Error removing the problem");
+    } finally {
+      set({ isLoading: false });
     }
-    finally {
-      set({isLoading: false});
+  },
+  getPlaylistDetails: async (id) => {
+    try {
+      set({ isLoading: true });
+      const res = await axiosInstance.get(`/playlist/${id}`);
+      set({ getPlaylistProblems: res.data.playlist });
+      
+      return res.data.playlist;
+    } catch (error) {
+      console.log("Error fetching the playlist details");
+      toast.error("Error fetching the playlist details");
+    } finally {
+      set({ isLoading: false });
     }
-  }
+  },
 }));
-
-
